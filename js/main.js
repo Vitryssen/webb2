@@ -10,7 +10,6 @@ window.onload = function () {
 	}
 	function getChannelData() {
 		var x = new XMLHttpRequest();
-		x.open("GET", "https://api.sr.se/api/v2/channels/", true);
 		x.onreadystatechange = function () {
 			if (x.readyState == 4 && x.status == 200)
 			{
@@ -23,7 +22,6 @@ window.onload = function () {
 					var url = "https://api.sr.se/v2/channels/?page=" + i;
 					//Loop through all channels on all pages
 					let request = new XMLHttpRequest();
-					request.open("GET", url);
 					request.onreadystatechange = function() {
 						if (request.readyState == 4 && request.status == 200){
 							var test = request.responseXML;
@@ -38,18 +36,18 @@ window.onload = function () {
 							//to output the information to the page
 						}
 					}
+					request.open("GET", url);
 					request.send();
 				}
 			}
 		};
+		x.open("GET", "https://api.sr.se/api/v2/channels/", true);
 		x.send();
 	}
 	
 };
 function getChannelSongs(channelId, index, callback) {
 	var x = new XMLHttpRequest();
-	x.open("GET", "https://api.sr.se/api/v2/playlists/rightnow?channelid="+channelId, true);
-	var test = true;
 	x.onreadystatechange = function () {
 		if (x.readyState == 4 && x.status == 200)
 		{
@@ -83,13 +81,13 @@ function getChannelSongs(channelId, index, callback) {
 			callback(index);
 		}
 	};
+	x.open("GET", "https://api.sr.se/api/v2/playlists/rightnow?channelid="+channelId, true);
 	x.send();
 };
 function getChannelSchedule() {
 	var givenId = document.getElementById("searchProgram").value
 	var episodes = [];
 	var x = new XMLHttpRequest();
-	x.open("GET", "http://api.sr.se/v2/scheduledepisodes?channelid="+givenId, true);
 	x.onreadystatechange = function () {
 		if (x.readyState == 4 && x.status == 200)
 		{
@@ -103,7 +101,6 @@ function getChannelSchedule() {
 				var url = "http://api.sr.se/v2/scheduledepisodes?channelid="+givenId+"&page=" + (i+1);
 				//Loops through all the pages the channel with the given id has
 				let request = new XMLHttpRequest();
-				request.open("GET", url);
 				request.onreadystatechange = function() {
 					if (request.readyState == 4 && request.status == 200){
 						var test = request.responseXML;
@@ -119,10 +116,12 @@ function getChannelSchedule() {
 						//and output the episodes to the page
 					}
 				}
+				request.open("GET", url);
 				request.send();
 			}
 		}
 	};
+	x.open("GET", "http://api.sr.se/v2/scheduledepisodes?channelid="+givenId, true);
 	x.send();
 }
 function getScheduleInfo(item, episodesOnPage, arrayForEpisodes){
